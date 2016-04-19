@@ -1,0 +1,13 @@
+SELECT *
+FROM (
+SELECT fleet,
+       ata_reference,
+       next_ata_reference,
+       LEAD(ata_reference) OVER (PARTITION BY fleet ORDER BY fleet, ata_reference) AS nxt_ata_ref
+FROM fleet_ata_references
+WHERE fleet = '2')
+WHERE next_ata_reference != nxt_ata_ref;
+
+SELECT fleet, ata_reference, next_ata_reference
+FROM fleet_ata_references
+WHERE fleet = '2';
